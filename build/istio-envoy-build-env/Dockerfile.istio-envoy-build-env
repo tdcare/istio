@@ -56,7 +56,7 @@ WORKDIR /tmp
 RUN set -eux; \
     \
     case $(uname -m) in \
-        x86_64) export LLVM_RELEASE=clang+llvm-${LLVM_VERSION}-x86_64-linux-gnu-ubuntu-18.04;; \
+        x86_64) export LLVM_RELEASE=clang+llvm-${LLVM_VERSION}-x86_64-linux-gnu-ubuntu-16.04;; \
         aarch64) export LLVM_RELEASE=clang+llvm-${LLVM_VERSION}-aarch64-linux-gnu;; \
         *) echo "unsupported architecture"; exit 1 ;; \
     esac; \
@@ -71,35 +71,51 @@ RUN set -eux; \
     chown -R root:root ${LLVM_PATH}; \
     rm -R /tmp/*
 
-FROM ubuntu:18.04
+FROM ubuntu:xenial
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN set -eux; \
-    \
-    apt-get update; \
-    apt-get install -y \
-    build-essential \
-    apt-utils \
-    unzip \
-    git \
-    make \
-    cmake \
-    automake \
-    autoconf \
-    libtool \
-    virtualenv \
-    python \
-    vim \
-    g++ \
-    wget \
-    ninja-build \
+# required for binary tools: ca-certificates, gcc, libc-dev, git, iptables, libltdl7
+# required for general build: make, wget, curl, ssh
+# required for python: python3, pkg-config
+# hadolint ignore=DL3008
+RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y --no-install-recommends \
+    apt-transport-https \
+    ca-certificates \
     curl \
-    lsb-core \
-    openjdk-11-jdk \
+    gnupg-agent \
     software-properties-common \
-    ; \
-    rm -rf /var/lib/apt/lists/*;
+    ca-certificates \
+    gcc \
+    git \
+    ssh \
+    libltdl7 \
+    libc-dev \
+    make \
+    pkg-config \
+    python3 \
+    python3-setuptools \
+    daemon \
+    wget \
+    jq \
+    tshark \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+# binary dependencies to build envoy at v1.12.0
+# https://github.com/envoyproxy/envoy/blob/v1.12.0/bazel/README.md
+# hadolint ignore=DL3008
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    autoconf \
+    automake \
+    cmake \
+    libtool \
+    ninja-build \
+    python \
+    unzip \
+    virtualenv \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 # bazel
 COPY --from=bazel /usr/local/bin/bazel /usr/local/bin/bazel

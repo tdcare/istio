@@ -7,15 +7,10 @@ FROM proxyv2-${BASE_DISTRIBUTION}-amd64 AS proxyv2-amd64
 
 FROM ghcr.io/querycap/istio/istio-base:${VERSION} AS default
 
-FROM debian:buster AS distroless-base
+FROM gcr.io/istio-release/iptables:d71c854a55d9661ea1c45ee4391335a67030a617 as distroless-arm64
+COPY --from=default /lib/aarch64-linux-gnu/lib* /lib/aarch64-linux-gnu/
 
-FROM gcr.io/distroless/cc-debian10@sha256:5bc7ef365a81ac2a58de8b9606d6840ea1aa4e03847137671671384b0b1700d4 AS distroless
-
-# TODO(https://github.com/istio/istio/issues/17656) clean up this hack
-COPY --from=default /sbin/xtables-multi /sbin/iptables* /sbin/ip6tables* /sbin/ip /sbin/
-COPY --from=default /usr/lib/aarch64-linux-gnu/xtables/ /usr/lib/aarch64-linux-gnu/xtables
-COPY --from=default /usr/lib/aarch64-linux-gnu/ /usr/lib/aarch64-linux-gnu
-COPY --from=default /etc/iproute2 /etc/iproute2
+FROM distroless-${TARGETARCH} as distroless
 
 FROM --platform=${BUILDPLATFORM} golang:1.15 AS proxyv2-arm64-builder
 ARG VERSION

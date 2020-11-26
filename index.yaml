@@ -1,6 +1,20 @@
 apiVersion: v1
 entries:
   istio-operator:
+  - apiVersion: v1
+    created: "2020-11-26T09:06:07.364218818Z"
+    description: Helm chart for deploying Istio operator
+    digest: 1de15dd92800d43a726a0f50f2a3e06441686708c45c6cff1402d62d82f4b920
+    icon: https://istio.io/latest/favicons/android-192x192.png
+    keywords:
+    - istio
+    - operator
+    name: istio-operator
+    sources:
+    - https://github.com/istio/istio/tree/master/operator
+    urls:
+    - https://github.com/querycap/istio/releases/download/istio-operator-1.7.0/istio-operator-1.7.0.tgz
+    version: 1.7.0
   - apiVersion: v2
     created: "2020-11-26T06:28:50.086521807Z"
     digest: 01def48b26ad8dff192b4c0736d2909820909bf82c99d66180d599f8ebe504be
@@ -8,5 +22,14 @@ entries:
     name: istio-operator
     urls:
     - https://github.com/querycap/istio/releases/download/istio-operator-0.0.0/istio-operator-0.0.0.tgz
+    version: 0.0.0
+  jaeger-operator:
+  - apiVersion: v2
+    created: "2020-11-26T09:06:07.521592671Z"
+    digest: ffed9baa6317f4f7e9fe70719865ba4af1af02846fcad1ae6bfa386ef7c4e9c0
+    kubeVersion: ^1.16.0-0
+    name: jaeger-operator
+    urls:
+    - https://github.com/querycap/istio/releases/download/jaeger-operator-0.0.0/jaeger-operator-0.0.0.tgz
     version: 0.0.0
 generated: "2020-11-26T06:28:49.979091388Z"

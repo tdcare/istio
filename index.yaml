@@ -1,0 +1,12 @@
+apiVersion: v1
+entries:
+  istio-operator:
+  - apiVersion: v2
+    created: "2020-11-26T06:28:50.086521807Z"
+    digest: 01def48b26ad8dff192b4c0736d2909820909bf82c99d66180d599f8ebe504be
+    kubeVersion: ^1.16.0-0
+    name: istio-operator
+    urls:
+    - https://github.com/querycap/istio/releases/download/istio-operator-0.0.0/istio-operator-0.0.0.tgz
+    version: 0.0.0
+generated: "2020-11-26T06:28:49.979091388Z"
